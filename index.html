@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PWA Demo</title>
+</head>
+<body>
+    <p> \{^_^}/ hi! This's PWA Demo. </p>
+    <ul id="list"></ul>
+    <script>
+        // 這邊才是demo主軸 serviceWorker
+        // 透過 'serviceWorker' in navigator 去判斷瀏覽器是否有支援 Service Worker
+        if ('serviceWorker' in navigator) {
+            // 有支援、則使用 serviceWorker.register 方法傳入 Service Worker 檔案（sw.js）並進行註冊。
+            navigator.serviceWorker.register('/sw.js')
+            .then(reg => console.log('完成 SW 設定!', reg))
+            .catch(err => console.log('Error!', err));
+        }
+    </script>
+    <script>
+        // 這邊是單純對json-server的資料印出
+        const list = document.getElementById('list');
+        fetch('http://localhost:3000/people')
+        .then(res => {
+            return res.json();
+        })
+        .then(json => {
+            list.innerHTML = json
+                            .map(item => `<li>${item.name}</li>`)
+                            .join('');
+        })
+    </script>
+</body>
+</html>
